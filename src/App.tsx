@@ -2,14 +2,26 @@
 import { useWeather } from "@/hooks/useWeather";
 import { ThemeToggle } from "./components/ThemeToggle";
 import ForcastGrid from "./components/ForcastGrid";
+import { WiDaySunny } from "react-icons/wi";
 
 export default function App() {
   const { data, isLoading, isError } = useWeather();
 
   if (isLoading)
-    return <div className="p-6 text-muted-foreground">Loading weather...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-muted-foreground space-y-2">
+        <WiDaySunny className="text-6xl animate-spin-slow text-yellow-400" />
+        <p className="text-lg">Loading weather...</p>
+      </div>
+    );
+
   if (isError || !data)
-    return <div className="p-6 text-red-500">Failed to load weather</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-red-500 space-y-2">
+        <WiDaySunny className="text-6xl animate-spin-slow" />
+        <p className="text-lg">Failed to load weather.</p>
+      </div>
+    );
 
   const { city, region, country, timezone, current, forecast } = data;
 
