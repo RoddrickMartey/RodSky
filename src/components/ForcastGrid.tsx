@@ -23,7 +23,7 @@ function ForcastGrid({
       </div>
 
       {/* Forecast Items */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 flex-1">
+      <div className="grid grid-cols-4 sm:grid-cols-2  gap-4 flex-1">
         {forcast.map((item, idx) => (
           <ForecastItem item={item} key={idx} />
         ))}
