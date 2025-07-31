@@ -1,8 +1,13 @@
-// src/App.tsx
 import { useWeather } from "@/hooks/useWeather";
 import { ThemeToggle } from "./components/ThemeToggle";
 import ForcastGrid from "./components/ForcastGrid";
-import { WiDaySunny } from "react-icons/wi";
+import {
+  WiDaySunny,
+  WiHumidity,
+  WiThermometer,
+  WiStrongWind,
+  WiThermometerExterior,
+} from "react-icons/wi";
 
 export default function App() {
   const { data, isLoading, isError } = useWeather();
@@ -26,7 +31,7 @@ export default function App() {
   const { city, region, country, timezone, current, forecast } = data;
 
   return (
-    <main className="h-screen w-full bg-background text-foreground px-4 py-6 space-y-6">
+    <main className="h-full w-full bg-background text-foreground px-4 py-6 space-y-6">
       {/* Header */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border pb-4">
         <div>
@@ -43,32 +48,46 @@ export default function App() {
         <ThemeToggle />
       </header>
 
-      {/* Current Weather */}
-      <section className="bg-card text-card-foreground rounded-xl p-6 shadow-sm space-y-4 border">
-        <h2 className="text-lg font-semibold text-muted-foreground">
-          Current Weather
-        </h2>
-        <div className="grid sm:grid-cols-2 gap-4 text-sm sm:text-base">
-          <p>
-            <strong>Condition:</strong> {current.description}
-          </p>
-          <p>
-            <strong>Temperature:</strong> {current.temp}&deg;C
-          </p>
-          <p>
-            <strong>Feels Like:</strong> {current.feels_like}&deg;C
-          </p>
-          <p>
-            <strong>Humidity:</strong> {current.humidity}%
-          </p>
-          <p>
-            <strong>Wind Speed:</strong> {current.wind_kph} km/h
-          </p>
+      {/* Responsive Section for Current + Forecast */}
+      <section className="flex flex-col lg:flex-row gap-6">
+        {/* Current Weather */}
+        <div className="flex-1 bg-card text-card-foreground rounded-xl p-6 shadow-sm space-y-6 border">
+          <h2 className="text-lg font-semibold text-muted-foreground">
+            Current Weather
+          </h2>
+          <div className="flex flex-col items-center text-center space-y-4">
+            <WiDaySunny className="text-7xl text-yellow-400" />
+            <div className="text-4xl font-bold">{current.temp}&deg;C</div>
+            <p className="text-base capitalize text-muted-foreground">
+              {current.description}
+            </p>
+
+            <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <WiThermometer className="text-xl" />
+                Feels: {current.feels_like}&deg;
+              </div>
+              <div className="flex items-center gap-2">
+                <WiHumidity className="text-xl" />
+                {current.humidity}%
+              </div>
+              <div className="flex items-center gap-2">
+                <WiStrongWind className="text-xl" />
+                {current.wind_kph} km/h
+              </div>
+              <div className="flex items-center gap-2">
+                <WiThermometerExterior className="text-xl" />
+                Real: {current.temp}&deg;
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Forecast */}
+        <div className="flex-1">
+          <ForcastGrid forcast={forecast} />
         </div>
       </section>
-
-      {/* Forecast Grid */}
-      <ForcastGrid forcast={forecast} />
     </main>
   );
 }
